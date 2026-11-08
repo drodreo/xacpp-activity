@@ -1,5 +1,10 @@
 //! Real-TCP integration: xaact consumer ↔ xacpp-mock-serve.
 //!
+//! CI boundary: the mock serve is a path dev-dependency on a sibling
+//! repository (`../xacpp-mock-serve`, not published); CI checks out this
+//! repository alone, so this test target is excluded from CI runs — run it
+//! locally with the sibling repository cloned next to this crate.
+//!
 //! The mock serve emits real wire bytes over a real TCP connection; the
 //! xaact consumer (the exact shape xamobile/agentx keep) ingests them
 //! through the standard chain — `XacppSessionHandler::on_event` →
