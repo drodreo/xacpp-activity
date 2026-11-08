@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+
+jobs:
+  fmt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
+      - name: Rustfmt
+        run: cargo fmt --check
+        shell: bash
+
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+      # xacpp-mock-serve is a path dev-dependency on a sibling repository
+      # (not published). CI checks out this repository alone, so a minimal
+      # stub crate satisfies dependency resolution; the integration test
+      # that actually uses it is excluded below.
+      - name: Stub sibling mock-serve crate
+        run: |
+          mkdir -p ../xacpp-mock-serve/src
+          printf 'name = "xacpp-mock-serve"\nversion = "0.1.0"\nedition = "2021"\n' > ../xacpp-mock-serve/Cargo.toml
+          touch ../xacpp-mock-serve/src/lib.rs
+        shell: bash
+      - name: Clippy (lib + single-repo test targets)
+        run: >
+          cargo clippy --lib
+          --test contract_tests --test orphan_trigger_replay --test user_input_identity
+          --test e2e_scenarios --test file_transfer_projection
+          --test buffer_projection --test buffer_steady_state
+          --test content_validity --test finalize_surface
+          --test latest_window_rebuild --test parallel_activities
+          --test projection_contract --
+          -D warnings
+        shell: bash
+      - name: Tests (single-repo targets)
+        run: >
+          cargo test
+          --test contract_tests --test orphan_trigger_replay --test user_input_identity
+          --test e2e_scenarios --test file_transfer_projection
+          --test buffer_projection --test buffer_steady_state
+          --test content_validity --test finalize_surface
+          --test latest_window_rebuild --test parallel_activities
+          --test projection_contract
+        shell: bash
