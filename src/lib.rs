@@ -11,17 +11,24 @@
 //! emitted by the x-agent xacpp listener (`event_bridge::convert_event`) and
 //! the `conversation_history` projection.
 
+pub mod draft;
 pub mod envelope;
 pub mod error;
 pub mod event;
 pub mod interaction;
+pub mod model;
 
+pub use draft::DraftStore;
 pub use envelope::{ActivityEventCategory, ActivityEventEnvelope};
 pub use error::ActivityError;
 pub use event::{ActivityEvent, ToolResultPayload, ToolResultStatus};
 pub use interaction::{
     Interaction, InteractionAnswer, InteractionError, InteractionKind, InteractionPayload,
     InteractionState,
+};
+pub use model::{
+    ActivityModel, ContentBlock, ProcessLevel, ProcessMessage, RenderEntry, SnapshotItem,
+    ThinkBlock, ToolCard, ToolResult, Turn, TurnStatus, inputs_text,
 };
 // Re-exported for consumers of `PairCompletePayload::tier` (the vocabulary
 // type lives in xacpp; the session layer surfaces it as part of its public
