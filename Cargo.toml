@@ -1,0 +1,24 @@
+[package]
+name = "xacpp-activity"
+version = "0.3.0"
+edition = "2024"
+description = "Client-side activity session runtime on top of the XACPP protocol: envelope runtime, unified event conversion, turn/interaction model."
+license = "MIT"
+repository = "https://github.com/drodreo/xacpp-activity"
+
+[dependencies]
+log = "0.4"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2.0"
+tokio = { version = "1", features = ["sync"] }
+xacpp = "1.2.2"
+
+[dev-dependencies]
+# Real-TCP integration against the scripted mock serve (path-only crate,
+# not published; its xacpp dependency resolves to the same published 1.2.2
+# release — no version skew).
+xacpp-mock-serve = { path = "../xacpp-mock-serve" }
+async-trait = "0.1"
+sha2 = "0.10"
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "net", "time", "sync"] }
