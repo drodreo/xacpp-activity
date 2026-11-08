@@ -12,5 +12,11 @@
 //! the `conversation_history` projection.
 
 pub mod error;
+pub mod event;
 
 pub use error::ActivityError;
+pub use event::{ActivityEvent, ToolResultPayload, ToolResultStatus};
+// Re-exported for consumers of `PairCompletePayload::tier` (the vocabulary
+// type lives in xacpp; the session layer surfaces it as part of its public
+// event face).
+pub use xacpp::wire::events::ModelTier;
