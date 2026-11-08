@@ -18,6 +18,7 @@ pub mod event;
 pub mod interaction;
 pub mod model;
 pub mod reducer;
+pub mod runtime;
 
 pub use draft::DraftStore;
 pub use envelope::{ActivityEventCategory, ActivityEventEnvelope};
@@ -32,6 +33,7 @@ pub use model::{
     ThinkBlock, ToolCard, ToolResult, Turn, TurnStatus, inputs_text,
 };
 pub use reducer::EventSource;
+pub use runtime::{ActivityRuntime, ConsumeOutcome, SyncPlan};
 // Re-exported for consumers of `PairCompletePayload::tier` (the vocabulary
 // type lives in xacpp; the session layer surfaces it as part of its public
 // event face).
