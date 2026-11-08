@@ -35,7 +35,7 @@ jobs:
       - name: Stub sibling mock-serve crate
         run: |
           mkdir -p ../xacpp-mock-serve/src
-          printf 'name = "xacpp-mock-serve"\nversion = "0.1.0"\nedition = "2021"\n' > ../xacpp-mock-serve/Cargo.toml
+          printf '[package]\nname = "xacpp-mock-serve"\nversion = "0.1.0"\nedition = "2021"\n' > ../xacpp-mock-serve/Cargo.toml
           touch ../xacpp-mock-serve/src/lib.rs
         shell: bash
       - name: Clippy (lib + single-repo test targets)
